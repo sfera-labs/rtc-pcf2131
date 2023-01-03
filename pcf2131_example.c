@@ -44,7 +44,7 @@ int main(int argc, char **argv) {
 		exit(errno);
 	}
 
-	fprintf(stderr, "Date/time: %d-%d-%d %02d:%02d:%02d.\n",
+	fprintf(stderr, "Date/time: %d-%d-%d %02d:%02d:%02d\n",
 			rtc_tm.tm_year + 1900, rtc_tm.tm_mon + 1, rtc_tm.tm_mday,
 			rtc_tm.tm_hour, rtc_tm.tm_min, rtc_tm.tm_sec);
 
