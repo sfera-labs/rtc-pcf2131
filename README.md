@@ -49,6 +49,8 @@ The system will automatically syncronize the RTC date/time when able to connect 
 
 ## Advanced usage
 
+The device corresponding to the rtc will be available at `/dev/rtc0` and its sysfs interface under `/sys/class/rtc/rtc0/`.
+
 The file `pcf2131_example.c` contains a C example to read the RTC date/time and other information (such as low backup battery voltage) using the `ioctl()` system call.
 
 Compile it with:
