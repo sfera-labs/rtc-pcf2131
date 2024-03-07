@@ -50,6 +50,7 @@ Reboot:
 
 After reboot, test the installation by checking that no error is returnd when running:
 
+    sudo hwclock -w
     sudo hwclock -r
 
 The system will automatically syncronize the RTC date/time when able to connect to an NTP server and, vice versa, the RTC stored values will be used when connection is not available.
