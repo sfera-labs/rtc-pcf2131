@@ -32,6 +32,7 @@ Clone this repo:
 Make and install:
 
     cd rtc-pcf2131
+    make clean
     make
     sudo make install
     
