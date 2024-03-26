@@ -2,8 +2,6 @@
 
 Driver for the NXP PCF2131 real time clock used by [Sfera Labs](https://www.sferalabs.cc/) products.
 
-This driver is based on the [NXP PCF2127/29 RTC driver](https://github.com/raspberrypi/linux/blob/rpi-5.17.y/drivers/rtc/rtc-pcf2127.c) with the [patch for PCF2131 support](https://lore.kernel.org/lkml/20220211205029.3940756-1-hugo@hugovil.com/T/) applied.
-
 ## Compile and Install
 
 *For installation on Ubuntu [read this](https://github.com/sfera-labs/knowledge-base/blob/main/raspberrypi/kernel-modules-ubuntu.md).*
