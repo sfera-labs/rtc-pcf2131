@@ -12,7 +12,7 @@
 			status = "okay";
 			
 			pcf2131: pcf2131@53 {
-				compatible = "nxp,pcf2131";
+				compatible = "sferalabs,rtc-pcf2131";
 				reg = <0x53>;
 				status = "okay";
 			};

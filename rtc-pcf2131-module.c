@@ -48,6 +48,7 @@
 #define PCF2127_BIT_CTRL3_BLF			BIT(2)
 #define PCF2127_BIT_CTRL3_BF			BIT(3)
 #define PCF2127_BIT_CTRL3_BTSE			BIT(4)
+#define PCF2127_CTRL3_PWRMNG_MASK		GENMASK(7, 5)
 /* Time and date registers */
 #define PCF2127_REG_TIME_BASE		0x03
 #define PCF2127_BIT_SC_OSF			BIT(7)
@@ -900,10 +901,25 @@ static ssize_t timestamp3_show(struct device *dev,
 	return timestamp_show(dev, attr, buf, 3);
 };
 
+static ssize_t battery_low_show(struct device *dev,
+			       struct device_attribute *attr, char *buf)
+{
+	struct pcf2127 *pcf2127 = dev_get_drvdata(dev->parent);
+	unsigned int ctrl3;
+	int ret;
+
+	ret = regmap_read(pcf2127->regmap, PCF2127_REG_CTRL3, &ctrl3);
+	if (ret)
+		return ret;
+
+	return sprintf(buf, "%d\n", (ctrl3 & PCF2127_BIT_CTRL3_BLF) ? 1 : 0);
+};
+
 static DEVICE_ATTR_RW(timestamp0);
 static DEVICE_ATTR_RW(timestamp1);
 static DEVICE_ATTR_RW(timestamp2);
 static DEVICE_ATTR_RW(timestamp3);
+static DEVICE_ATTR_RO(battery_low);
 
 static struct attribute *pcf2127_attrs[] = {
 	&dev_attr_timestamp0.attr,
@@ -915,6 +931,7 @@ static struct attribute *pcf2131_attrs[] = {
 	&dev_attr_timestamp1.attr,
 	&dev_attr_timestamp2.attr,
 	&dev_attr_timestamp3.attr,
+	&dev_attr_battery_low.attr,
 	NULL
 };
 
@@ -1188,6 +1205,20 @@ static int pcf2127_probe(struct device *dev, struct regmap *regmap,
 	if (ret < 0)
 		return ret;
 
+	/* Make sure PWRMNG[2:0] is set to 000b. This is the default for
+	 * PCF2127/29, but not for PCF2131 (default of 111b).
+	 *
+	 * PWRMNG[2:0]  = 000b:
+	 *   battery switch-over function is enabled in standard mode;
+	 *   battery low detection function is enabled
+	 */
+	ret = regmap_clear_bits(pcf2127->regmap, PCF2127_REG_CTRL3,
+				PCF2127_CTRL3_PWRMNG_MASK);
+	if (ret < 0) {
+		dev_err(dev, "PWRMNG config failed\n");
+		return ret;
+	}
+
 	ret = regmap_read(pcf2127->regmap, pcf2127->cfg->reg_clkout, &val);
 	if (ret < 0)
 		return ret;
@@ -1262,10 +1293,7 @@ static int pcf2127_probe(struct device *dev, struct regmap *regmap,
 
 #ifdef CONFIG_OF
 static const struct of_device_id pcf2127_of_match[] = {
-	{ .compatible = "nxp,pcf2127", .data = &pcf21xx_cfg[PCF2127] },
-	{ .compatible = "nxp,pcf2129", .data = &pcf21xx_cfg[PCF2129] },
-	{ .compatible = "nxp,pca2129", .data = &pcf21xx_cfg[PCF2129] },
-	{ .compatible = "nxp,pcf2131", .data = &pcf21xx_cfg[PCF2131] },
+	{ .compatible = "sferalabs,rtc-pcf2131", .data = &pcf21xx_cfg[PCF2131] },
 	{}
 };
 MODULE_DEVICE_TABLE(of, pcf2127_of_match);
@@ -1350,10 +1378,7 @@ static const struct regmap_bus pcf2127_i2c_regmap = {
 static struct i2c_driver pcf2127_i2c_driver;
 
 static const struct i2c_device_id pcf2127_i2c_id[] = {
-	{ "pcf2127", PCF2127 },
-	{ "pcf2129", PCF2129 },
-	{ "pca2129", PCF2129 },
-	{ "pcf2131", PCF2131 },
+	{ "rtc-pcf2131", PCF2131 },
 	{ }
 };
 MODULE_DEVICE_TABLE(i2c, pcf2127_i2c_id);
@@ -1469,10 +1494,7 @@ static int pcf2127_spi_probe(struct spi_device *spi)
 }
 
 static const struct spi_device_id pcf2127_spi_id[] = {
-	{ "pcf2127", PCF2127 },
-	{ "pcf2129", PCF2129 },
-	{ "pca2129", PCF2129 },
-	{ "pcf2131", PCF2131 },
+	{ "rtc-pcf2131", PCF2131 },
 	{ }
 };
 MODULE_DEVICE_TABLE(spi, pcf2127_spi_id);
