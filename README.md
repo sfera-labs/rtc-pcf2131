@@ -11,7 +11,7 @@ Make sure your system is updated:
     sudo apt update
     sudo apt upgrade
 
-If you are using a Raspberry Pi (CM) **4** and a **32-bit** OS, add to `/boot/config.txt` the following line: [[why?](https://github.com/raspberrypi/firmware/issues/1795)]
+If you are using a Raspberry Pi (CM) **4** and a **32-bit** OS, add to `/boot/firmware/config.txt` (`/boot/config.txt` in older versions) the following line: [[why?](https://github.com/raspberrypi/firmware/issues/1795)]
 
     arm_64bit=0
     
@@ -39,7 +39,7 @@ Compile the Device Tree and install it:
     dtc -@ -Hepapr -I dts -O dtb -o rtc-pcf2131.dtbo rtc-pcf2131.dts
     sudo cp rtc-pcf2131.dtbo /boot/overlays/
 
-Add to `/boot/config.txt` the following line:
+Add to `/boot/firmware/config.txt` (`/boot/config.txt` in older versions) the following line:
 
     dtoverlay=rtc-pcf2131
 
