@@ -27,7 +27,7 @@ After reboot, install git and the Raspberry Pi kernel headers:
 
 Clone this repo:
 
-    git clone --depth 1 https://github.com/sfera-labs/rtc-pcf2131
+    git clone --depth 1 -b master https://github.com/sfera-labs/rtc-pcf2131
 
 Make and install:
 
