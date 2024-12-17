@@ -18,4 +18,9 @@
 			};
 		};
 	};
+	
+	__overrides__ {
+		wakeup-source = <&pcf2131>,"wakeup-source?";
+		reset-source = <&pcf2131>,"reset-source?";
+	};
 };
