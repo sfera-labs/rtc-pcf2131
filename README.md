@@ -56,7 +56,7 @@ The system will automatically syncronize the RTC date/time when able to connect 
 
 ## Advanced usage
 
-The device corresponding to the rtc will be available at `/dev/rtc0` and its sysfs interface under `/sys/class/rtc/rtc0/`.
+The device corresponding to the rtc will be available at `/dev/rtc0` (or `/dev/rtc1` on a Pi 5) and its sysfs interface under `/sys/class/rtc/rtc0/` (or `/sys/class/rtc/rtc1/` on a Pi 5).
 
 The file `pcf2131_example.c` contains a C example to read the RTC date/time and other information (such as low backup battery voltage) using the `ioctl()` system call.
 
