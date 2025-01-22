@@ -39,7 +39,11 @@ Compile the Device Tree and install it:
     dtc -@ -Hepapr -I dts -O dtb -o rtc-pcf2131.dtbo rtc-pcf2131.dts
     sudo cp rtc-pcf2131.dtbo /boot/overlays/
 
-Add to `/boot/firmware/config.txt` (`/boot/config.txt` in older versions) the following line:
+If you are using a Raspberry Pi (CM) **5** you should disable its RTC. To this end, add to `/boot/firmware/config.txt` (`/boot/config.txt` in older versions) the following line:
+
+    dtparam=rtc=off
+
+Finally, to enable the driver, add to `/boot/firmware/config.txt` (`/boot/config.txt` in older versions) the following line:
 
     dtoverlay=rtc-pcf2131
 
@@ -47,7 +51,7 @@ Reboot:
 
     sudo reboot
 
-After reboot, test the installation by checking that no error is returnd when running:
+After reboot, test the installation by checking that no error is returned when running:
 
     sudo hwclock -w
     sudo hwclock -r
@@ -56,7 +60,9 @@ The system will automatically syncronize the RTC date/time when able to connect 
 
 ## Advanced usage
 
-The device corresponding to the rtc will be available at `/dev/rtc0` (or `/dev/rtc1` on a Pi 5) and its sysfs interface under `/sys/class/rtc/rtc0/` (or `/sys/class/rtc/rtc1/` on a Pi 5).
+The device corresponding to the RTC will be available at `/dev/rtc0` and its sysfs interface under `/sys/class/rtc/rtc0/`.
+
+If you are using a Raspberry Pi (CM) **5** and you didn't disable its RTC, this device will be `rtc1` instead.
 
 The file `pcf2131_example.c` contains a C example to read the RTC date/time and other information (such as low backup battery voltage) using the `ioctl()` system call.
 
