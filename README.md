@@ -51,10 +51,7 @@ Reboot:
 
     sudo reboot
 
-After reboot, test the installation by checking that no error is returned when running:
-
-    sudo hwclock -w
-    sudo hwclock -r
+After reboot, test the installation by running `timedatectl` and check the RTC time is correctly set.
 
 The system will automatically syncronize the RTC date/time when able to connect to an NTP server and, vice versa, the RTC stored values will be used when connection is not available.
 
