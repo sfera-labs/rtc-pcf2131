@@ -2,6 +2,9 @@
 
 Driver for the NXP PCF2131 real time clock used by [Sfera Labs](https://www.sferalabs.cc/) products.
 
+[![Build tests [stable oldstable]](https://github.com/sfera-labs/rtc-pcf2131/actions/workflows/build-apt.yml/badge.svg)](https://github.com/sfera-labs/rtc-pcf2131/actions/workflows/build-apt.yml)
+[![Build tests [firmware]](https://github.com/sfera-labs/rtc-pcf2131/actions/workflows/build-fw.yml/badge.svg)](https://github.com/sfera-labs/rtc-pcf2131/actions/workflows/build-fw.yml)
+
 ## Compile and Install
 
 Make sure your system is updated:
