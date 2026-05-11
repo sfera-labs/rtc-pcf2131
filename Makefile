@@ -1,13 +1,4 @@
-obj-m += rtc-pcf2131.o
+MODULE_MAIN_OBJ := module.o
 
-rtc-pcf2131-objs := rtc-pcf2131-module.o
-
-all:
-	make -C /lib/modules/$(shell uname -r)/build/ M=$(PWD) modules
-
-clean:
-	make -C /lib/modules/$(shell uname -r)/build/ M=$(PWD) clean
-
-install:
-	sudo install -m 644 -c rtc-pcf2131.ko /lib/modules/$(shell uname -r)
-	sudo depmod
+SOURCE_DIR := $(if $(src),$(src),$(CURDIR))
+include $(SOURCE_DIR)/commons/scripts/kmod-common.mk
