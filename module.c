@@ -1440,6 +1440,16 @@ static void pcf2127_i2c_unregister_driver(void)
 	i2c_del_driver(&pcf2127_i2c_driver);
 }
 
+int pcf21xx_i2c_register_driver(void)
+{
+	return pcf2127_i2c_register_driver();
+}
+
+void pcf21xx_i2c_unregister_driver(void)
+{
+	pcf2127_i2c_unregister_driver();
+}
+
 #else
 
 static int pcf2127_i2c_register_driver(void)
