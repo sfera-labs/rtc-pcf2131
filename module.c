@@ -29,6 +29,8 @@
 #include <linux/regmap.h>
 #include <linux/watchdog.h>
 
+#include "pcf21xx.h"
+
 /* Control register 1 */
 #define PCF2127_REG_CTRL1		0x00
 #define PCF2127_BIT_CTRL1_POR_OVRD		BIT(3)
@@ -1541,6 +1543,7 @@ static void pcf2127_spi_unregister_driver(void)
 
 #endif
 
+#ifdef RTC_PCF2131_MODULE_VERSION
 static int __init pcf2127_init(void)
 {
 	int ret;
@@ -1572,3 +1575,4 @@ MODULE_AUTHOR("Renaud Cerrato <r.cerrato@til-technologies.fr>");
 MODULE_DESCRIPTION("NXP PCF2127/29/31 RTC driver");
 MODULE_LICENSE("GPL v2");
 MODULE_VERSION(RTC_PCF2131_MODULE_VERSION);
+#endif
