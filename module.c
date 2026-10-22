@@ -7,7 +7,7 @@
 #include <linux/init.h>
 #include <linux/module.h>
 
-#include "commons/rtc-pcf21xx/pcf21xx.h"
+#include "commons/pcf21xx/pcf21xx.h"
 
 static int __init pcf2131_init(void)
 {
