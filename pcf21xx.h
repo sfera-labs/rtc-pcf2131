@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: GPL-2.0-only
+
 #ifndef _SL_PCF21XX_H
 #define _SL_PCF21XX_H
 
