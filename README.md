@@ -1,72 +1,32 @@
 # NXP PCF2131 RTC driver
 
-Driver for the NXP PCF2131 real time clock used by [Sfera Labs](https://www.sferalabs.cc/) products.
+Debian-based Linux kernel module for the NXP PCF2131 real-time clock used by [Sfera Labs](https://www.sferalabs.cc/) products.
 
 [![Build tests [stable oldstable]](https://github.com/sfera-labs/rtc-pcf2131/actions/workflows/build-apt.yml/badge.svg)](https://github.com/sfera-labs/rtc-pcf2131/actions/workflows/build-apt.yml)
 [![Build tests [firmware]](https://github.com/sfera-labs/rtc-pcf2131/actions/workflows/build-fw.yml/badge.svg)](https://github.com/sfera-labs/rtc-pcf2131/actions/workflows/build-fw.yml)
 
 ## Installation
 
-Make sure your system is updated:
+For source-based installation, see this [installation guide](https://github.com/sfera-labs/sl-kmod-commons/blob/main/INSTALLATION.md).
+
+If the Sfera Labs APT repository is not configured yet, [add the repository and install its keyring](https://github.com/sfera-labs/apt#install).
+
+Install the package:
 
     sudo apt update
-    sudo apt upgrade
+    sudo apt install rtc-pcf2131-dkms
 
-If you are using a **32-bit** OS, add to `/boot/firmware/config.txt` (`/boot/config.txt` in older versions) the following line: [[why?](https://github.com/raspberrypi/firmware/issues/1795)]
+The package registers the module with DKMS, which builds it for kernels with matching headers and rebuilds it when new kernel headers are installed. It also installs the device-tree overlay.
 
-    arm_64bit=0
-
-Reboot:
-
-    sudo reboot
-
-After reboot, install required tools:
-
-    sudo apt install git device-tree-compiler dkms linux-headers-$(uname -r)
-
-Clone this repo:
-
-    git clone --depth 1 https://github.com/sfera-labs/rtc-pcf2131
-
-    cd rtc-pcf2131
-
-### Recommended installation mode: DKMS
-
-This is the recommended mode. It automatically rebuilds and reinstalls the module when new kernel versions are installed.
-
-Register, build and install with DKMS:
-
-    sudo dkms add .
-    sudo dkms build -m $(cat MODULE_NAME) -v $(cat VERSION)
-    sudo dkms install -m $(cat MODULE_NAME) -v $(cat VERSION)
-
-### Alternative installation mode: manual install for running kernel only
-
-<details>
-
-<summary>Show</summary>
-
-Use this only if you specifically want to install for the current running kernel version only.
-
-    make clean
-    make
-    sudo make install
-
-Manual mode does not provide automatic rebuild on kernel upgrades.
-
-</details>
-
-### Enable overlay at boot
-
-If you are using a Raspberry Pi (CM) **5** you should disable its RTC. To this end, add to `/boot/firmware/config.txt` the following line:
+If using a Raspberry Pi 5 or Compute Module 5, disable its built-in RTC by adding this to `/boot/firmware/config.txt`:
 
     dtparam=rtc=off
 
-To enable this RTC driver, add to `/boot/firmware/config.txt` the following line:
+Enable the RTC overlay by adding this line to the same file:
 
     dtoverlay=rtc-pcf2131
 
-Reboot:
+Finally, reboot to apply the configuration:
 
     sudo reboot
 
